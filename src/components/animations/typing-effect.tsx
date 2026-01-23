@@ -55,7 +55,7 @@ export function TypingEffect({
   ]);
 
   return (
-    <span className={cn("inline-block min-h-[1.5em]", className)}>
+    <span className={cn("inline-block min-h-[1.5em] max-w-full break-words whitespace-pre-wrap align-bottom", className)}>
       {displayedText}
       <span className="animate-pulse">|</span>
     </span>

@@ -105,7 +105,7 @@ export function RoiSimulator() {
           <div className="mb-6">
              <SplitText
                 text="Transformez vos pertes en profits"
-                className="text-4xl md:text-5xl font-display font-bold adaptive-text-primary"
+                className="text-2xl sm:text-3xl md:text-5xl font-display font-bold adaptive-text-primary px-2"
              />
           </div>
           
@@ -148,7 +148,7 @@ export function RoiSimulator() {
         <FadeIn delay={0.6}>
           <div className="max-w-3xl mx-auto text-center bg-linear-to-b from-white/5 to-transparent rounded-2xl p-8 border border-white/5">
             <h3 className="text-2xl font-bold mb-2 adaptive-text-primary">
-              Gain potentiel total : <span className="text-primary">{totalGain.toLocaleString("fr-FR")} € / an</span>
+              Gain potentiel total : <span className="text-primary">{totalGain.toLocaleString("fr-FR")} €</span>
             </h3>
             <p className="adaptive-text-description mb-8">
               Et ce n&apos;est que la partie visible de l&apos;iceberg. Imaginez l&apos;impact sur le reste de votre officine.

@@ -286,7 +286,7 @@ export function InfiniteTunnel() {
   }, [resolvedTheme]);
 
   return (
-    <div ref={containerRef} className="fixed inset-0 -z-50 h-full w-full">
+    <div ref={containerRef} className="fixed inset-0 -z-50 h-full w-full max-w-[100vw] overflow-hidden">
       <canvas ref={canvasRef} className="block h-full w-full" />
     </div>
   );

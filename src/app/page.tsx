@@ -13,23 +13,25 @@ export default function Home() {
       <InfiniteTunnel />
       <Header />
 
-      <main className="flex min-h-screen flex-col items-center justify-between relative">
-        <div id="hero">
-          <HeroSection />
-        </div>
-        <div id="services">
-          <ServicesGrid />
-        </div>
-        <div id="roi">
-          <RoiSimulator />
-        </div>
-        <div id="testimonials">
-          <Testimonials />
-        </div>
-        <div id="contact">
-          <ContactForm />
-        </div>
-      </main>
+      <div className="relative w-full max-w-[100vw] overflow-x-hidden">
+        <main className="flex min-h-screen flex-col items-center justify-between relative">
+          <div id="hero">
+            <HeroSection />
+          </div>
+          <div id="services">
+            <ServicesGrid />
+          </div>
+          <div id="roi">
+            <RoiSimulator />
+          </div>
+          <div id="testimonials">
+            <Testimonials />
+          </div>
+          <div id="contact">
+            <ContactForm />
+          </div>
+        </main>
+      </div>
     </>
   );
 }

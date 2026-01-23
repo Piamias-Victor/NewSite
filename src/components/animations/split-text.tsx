@@ -61,7 +61,7 @@ export function SplitText({
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
       variants={containerVariants}
-      className={cn("inline-block", className)} // Changed to inline-block/block depending on usage, usually inline-block wrap works
+      className={cn("block break-words max-w-full", className)} // Changed to block to respect parent width
       {...props}
     >
       <span className="sr-only">{text}</span>
@@ -71,7 +71,7 @@ export function SplitText({
             key={`${char}-${i}`}
             variants={charVariants}
             className="inline-block"
-            style={{ whiteSpace: "pre" }} // Preserve spaces
+            style={{ whiteSpace: "pre-wrap" }} // Preserve spaces but allow wrap
           >
             {char}
           </motion.span>

@@ -27,10 +27,10 @@ export function ServicesGrid() {
       <Container>
         <motion.div 
           style={{ opacity, y }} 
-          className="mb-20 max-w-4xl mx-auto text-center"
+          className="mb-12 md:mb-20 max-w-4xl mx-auto text-center px-4"
         >
           <FadeIn>
-            <h2 ref={titleRef} className="text-5xl md:text-7xl font-display font-bold leading-tight mb-6 drop-shadow-2xl">
+            <h2 ref={titleRef} className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-display font-bold leading-tight mb-4 md:mb-6 drop-shadow-2xl">
               <SplitText 
                 text="Nos Solutions" 
                 className="adaptive-text-primary" 
@@ -39,33 +39,33 @@ export function ServicesGrid() {
             </h2>
           </FadeIn>
           <FadeIn delay={0.2}>
-            <p className="adaptive-text-description text-xl md:text-2xl font-light">
+            <p className="adaptive-text-description text-base sm:text-lg md:text-xl lg:text-2xl font-light px-4">
               L&apos;innovation technologique au service de votre officine.
             </p>
           </FadeIn>
         </motion.div>
 
-        <BentoGrid className="grid-cols-1 md:grid-cols-3 gap-8 auto-rows-[22rem]">
+        <BentoGrid className="grid-cols-1 md:grid-cols-3 gap-4 md:gap-8 auto-rows-auto md:auto-rows-[22rem]">
           {/* 1. STAR CARD - Custom Project (FIRST POSITION) */}
           <BentoCard
             title={
               <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 w-full h-full">
-                <div className="flex-1 space-y-4">
-                  <div className="text-3xl font-display font-bold bento-text-strong block">
+                <div className="flex-1 space-y-3 md:space-y-4">
+                  <div className="text-xl sm:text-2xl md:text-3xl font-display font-bold bento-text-strong block">
                     On s&apos;adapte à vos besoins
                   </div>
-                  <p className="text-lg text-muted-foreground leading-relaxed max-w-xl">
-                    Vous avez une vision ? Nous avons la technologie pour la réaliser. <br/>
+                  <p className="text-sm sm:text-base md:text-lg text-muted-foreground leading-relaxed max-w-xl">
+                    Vous avez une vision ? Nous avons la technologie pour la réaliser. <br className="hidden md:block"/>
                     De l&apos;idée à la production, nous concevons votre outil sur-mesure.
                   </p>
                 </div>
                 
-                <div className="flex flex-col sm:flex-row gap-4 shrink-0 mt-4 md:mt-0 relative z-20">
-                  <Button size="xl" variant="default" className="rounded-full shadow-xl text-lg px-8">
+                <div className="flex flex-col sm:flex-row gap-3 md:gap-4 shrink-0 mt-4 md:mt-0 relative z-20 w-full md:w-auto">
+                  <Button size="lg" variant="default" className="rounded-full shadow-xl md:h-14 md:px-8 md:text-lg w-full sm:w-auto text-sm md:text-lg">
                     Nous contacter
-                    <ArrowRight className="ml-2 h-5 w-5" />
+                    <ArrowRight className="ml-2 h-4 w-4 md:h-5 md:w-5" />
                   </Button>
-                  <Button variant="glass" size="xl" className="rounded-full bento-header-bg hover:bg-neutral-800 bento-text-strong text-lg border-white/10">
+                  <Button size="lg" variant="glass" className="rounded-full bento-header-bg hover:bg-neutral-800 bento-text-strong border-white/10 md:h-14 md:px-8 md:text-lg w-full sm:w-auto text-sm md:text-lg">
                     Besoin d&apos;inspiration ?
                   </Button>
                 </div>
@@ -78,7 +78,6 @@ export function ServicesGrid() {
             }
             className="md:col-span-3 bento-card-bg shadow-lg overflow-visible relative p-8"
           />
-
           {/* 2. Analyse DATA */}
           <BentoCard
             title={<span className="text-xl font-bold bento-text-strong">Analyse DATA</span>}

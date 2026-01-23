@@ -109,35 +109,71 @@ export function Header() {
       {/* Mobile Menu */}
       <AnimatePresence>
         {isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.2 }}
-            className="fixed top-20 left-0 right-0 z-40 md:hidden bg-white/95 dark:bg-neutral-950/95 backdrop-blur-xl border-b border-neutral-200 dark:border-white/5 shadow-lg"
-          >
-            <nav className="container mx-auto px-4 py-6 flex flex-col gap-4">
-              {NAV_LINKS.map((link) => (
-                <button
-                  key={link.href}
-                  onClick={() => scrollToSection(link.href)}
-                  className="text-left py-3 px-4 rounded-lg adaptive-text-primary hover:bg-neutral-100 dark:hover:bg-white/5 transition-colors font-medium"
-                >
-                  {link.label}
-                </button>
-              ))}
-              <div className="flex items-center gap-4 mt-2">
-                <ThemeToggle />
-                <Button
-                  onClick={() => scrollToSection("#contact")}
-                  size="lg"
-                  className="rounded-full flex-1"
-                >
-                  Réserver un audit
-                </Button>
-              </div>
-            </nav>
-          </motion.div>
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="fixed inset-0 z-30 bg-black/50 backdrop-blur-sm md:hidden"
+              onClick={() => setIsMobileMenuOpen(false)}
+            />
+            
+            {/* Menu Panel */}
+            <motion.div
+              initial={{ opacity: 0, x: "100%" }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: "100%" }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              className="fixed top-20 right-0 bottom-0 z-40 w-full max-w-sm md:hidden adaptive-header-bg backdrop-blur-xl border-l border-neutral-200 dark:border-white/10 shadow-2xl"
+            >
+              <nav className="h-full overflow-y-auto px-6 py-8 flex flex-col">
+                {/* Navigation Links */}
+                <div className="space-y-2 mb-8">
+                  {NAV_LINKS.map((link, index) => (
+                    <motion.button
+                      key={link.href}
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.05 }}
+                      onClick={() => scrollToSection(link.href)}
+                      className="w-full text-left py-4 px-5 rounded-xl adaptive-text-primary hover:bg-neutral-100 dark:hover:bg-white/5 transition-all duration-200 font-medium text-lg active:scale-95"
+                    >
+                      {link.label}
+                    </motion.button>
+                  ))}
+                </div>
+
+                {/* Bottom Actions */}
+                <div className="mt-auto space-y-4 pt-6 border-t border-neutral-200 dark:border-white/10">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3 }}
+                    className="flex items-center justify-between"
+                  >
+                    <span className="text-sm adaptive-text-description">Thème</span>
+                    <ThemeToggle />
+                  </motion.div>
+                  
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.35 }}
+                  >
+                    <Button
+                      onClick={() => scrollToSection("#contact")}
+                      size="lg"
+                      className="rounded-full w-full active:scale-95 transition-transform"
+                    >
+                      Réserver un audit
+                    </Button>
+                  </motion.div>
+                </div>
+              </nav>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
     </>

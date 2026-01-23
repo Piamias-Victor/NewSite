@@ -47,7 +47,7 @@ export const BentoCard = ({
   return (
     <div
       className={cn(
-        "row-span-1 rounded-xl group/bento shadow-sm dark:shadow-none p-4 border border-neutral-200 dark:border-white/10 justify-between flex flex-col space-y-4 overflow-hidden relative",
+        "row-span-1 rounded-xl group/bento shadow-sm dark:shadow-none p-4 md:p-4 border border-neutral-200 dark:border-white/10 justify-between flex flex-col space-y-4 overflow-hidden relative",
         className
       )}
     >
@@ -60,10 +60,10 @@ export const BentoCard = ({
       <div className="relative z-20 flex-1 flex flex-col">
         <div className="flex-1">
           {icon}
-          <div className="font-sans font-bold text-neutral-600 dark:text-neutral-200 mb-2 mt-2">
+          <div className="font-sans font-bold text-neutral-600 dark:text-neutral-200 mb-2 mt-2 text-sm md:text-base lg:text-lg">
             {title}
           </div>
-          <div className="font-sans text-xs bento-text-muted">
+          <div className="font-sans text-xs md:text-xs bento-text-muted leading-relaxed">
             {description}
           </div>
         </div>
