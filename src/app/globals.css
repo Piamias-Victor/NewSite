@@ -1,26 +1,339 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@theme {
+  /* Palette Cuivre Brillant - Cuivre → Bronze → Or rose */
+  --color-background: oklch(12% 0.01 35);
+  --color-foreground: oklch(98% 0.01 35);
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  /* Primary - Cuivre (30°) */
+  --color-primary: oklch(62% 0.2 30);
+  --color-primary-foreground: oklch(10% 0 0);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  /* Secondary - Bronze (40°) */
+  --color-secondary: oklch(66% 0.16 40);
+  --color-secondary-foreground: oklch(10% 0 0);
+
+  /* Accent - Or rose (50°) */
+  --color-accent: oklch(72% 0.14 50);
+  --color-accent-foreground: oklch(10% 0 0);
+
+  /* Muted - Gris chaud */
+  --color-muted: oklch(22% 0.01 35);
+  --color-muted-foreground: oklch(65% 0.01 35);
+
+  /* Destructive - Rouge cuivré */
+  --color-destructive: oklch(58% 0.22 25);
+  --color-destructive-foreground: oklch(98% 0 0);
+
+  /* Border & Ring */
+  --color-border: oklch(28% 0.01 35);
+  --color-ring: oklch(62% 0.2 30);
+  /* Marquee Animations */
+  --animate-marquee: marquee 40s linear infinite;
+  --animate-marquee-vertical: marquee-vertical 40s linear infinite;
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(calc(-100% - 1rem)); }
+  }
+
+  @keyframes marquee-vertical {
+    from { transform: translateY(0); }
+    to { transform: translateY(calc(-100% - 1rem)); }
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer base {
+  :root {
+    /* Glass effects cuivrés */
+    --glass: rgba(30, 22, 18, 0.85);
+    --glass-border: rgba(200, 120, 80, 0.2);
+
+    /* Gradient Cuivre : Cuivre → Bronze → Or rose */
+    --gradient-primary: linear-gradient(
+      135deg,
+      oklch(62% 0.2 30) 0%,
+      oklch(66% 0.16 40) 50%,
+      oklch(72% 0.14 50) 100%
+    );
+
+    /* Mesh gradient cuivré subtil */
+    --gradient-mesh:
+      radial-gradient(
+        at 40% 20%,
+        oklch(62% 0.2 30 / 0.15) 0px,
+        transparent 50%
+      ),
+      radial-gradient(
+        at 80% 80%,
+        oklch(66% 0.16 40 / 0.12) 0px,
+        transparent 50%
+      ),
+      radial-gradient(at 0% 50%, oklch(72% 0.14 50 / 0.08) 0px, transparent 50%);
+  }
+
+  .light {
+    --color-background: oklch(99% 0.005 35);
+    --color-foreground: oklch(15% 0.01 35);
+    --color-muted: oklch(94% 0.01 35);
+    --color-muted-foreground: oklch(48% 0.01 35);
+    --color-border: oklch(88% 0.01 35);
+
+    --glass: rgba(255, 248, 245, 0.8);
+    --glass-border: rgba(200, 120, 80, 0.15);
+  }
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-feature-settings:
+      "rlig" 1,
+      "calt" 1;
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease;
+  }
+
+  /* Custom scrollbar cuivre */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background-color: var(--color-muted);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(
+      180deg,
+      var(--color-primary),
+      var(--color-secondary)
+    );
+    border-radius: 9999px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-primary);
+  }
+
+  /* Selection cuivre */
+  ::selection {
+    background-color: var(--color-primary);
+    color: oklch(10% 0 0);
+  }
+}
+
+@layer utilities {
+  /* FORCE BENTO CARD BACKGROUND (Glassmorphism + Copper Nuance - STRONGER) */
+  .bento-card-bg {
+    /* Dark Mode: Much more visible Dark Copper Glass */
+    background-color: rgba(30, 20, 15, 0.4) !important; 
+    backdrop-filter: blur(20px) saturate(140%) !important;
+    border: 1px solid rgba(255, 150, 100, 0.25) !important; /* Brighter Copper Border */
+    box-shadow: 
+      0 8px 32px -8px rgba(0, 0, 0, 0.8),
+      inset 0 0 30px -10px rgba(255, 120, 80, 0.1) !important; /* Inner Copper Glow */
+  }
+  
+  .light .bento-card-bg, .light .dark\:bg-neutral-950 {
+    /* Light Mode: Warm Glass */
+    background-color: rgba(255, 252, 250, 0.6) !important;
+    backdrop-filter: blur(20px) saturate(140%) !important;
+    border: 1px solid rgba(255, 150, 100, 0.2) !important;
+    box-shadow: 
+      0 8px 32px -8px rgba(200, 120, 80, 0.15),
+      inset 0 0 20px -10px rgba(255, 255, 255, 0.8) !important;
+  }
+
+  /* FORCE BENTO HEADER BACKGROUND (The visual mockups) */
+  .bento-header-bg {
+    background-color: rgba(255, 255, 255, 0.03) !important; /* Very subtle glass for mockup headers */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+  }
+  
+  .light .bento-header-bg {
+    background-color: rgba(255, 255, 255, 0.5) !important;
+    border-bottom: 1px solid rgba(200, 120, 80, 0.1) !important;
+  }
+
+  /* FORCE TEXT CONTRAST */
+  .bento-text-strong {
+    color: white !important;
+  }
+
+  .light .bento-text-strong {
+    color: #171717 !important; /* neutral-900 */
+  }
+
+  .bento-text-muted {
+    color: #e5e5e5 !important; /* neutral-200 - Much lighter for readability */
+    font-weight: 400 !important;
+  }
+
+  .light .bento-text-muted {
+    color: #525252 !important; /* neutral-600 */
+  }
+
+  /* FORCE TEXT COLORS - OVERRIDE TAILWIND */
+  .adaptive-text-primary {
+    color: #ffffff !important; /* Start with White (Dark Mode Default) */
+  }
+  
+  .light .adaptive-text-primary {
+    color: #171717 !important; /* Black in Light Mode */
+  }
+
+  .adaptive-text-description {
+    color: #e5e5e5 !important; /* Light Grey (Dark Mode Default) */
+  }
+  
+  .light .adaptive-text-description {
+    color: #525252 !important; /* Dark Grey in Light Mode */
+  }
+
+  /* FORCE HEADER BACKGROUND - ADAPTIVE */
+  .adaptive-header-bg {
+    background-color: rgba(0, 0, 0, 0.95) !important; /* Black in Dark Mode */
+    border-color: rgba(255, 255, 255, 0.1) !important;
+  }
+  
+  .light .adaptive-header-bg {
+    background-color: rgba(255, 255, 255, 0.95) !important; /* White in Light Mode */
+    border-color: rgba(23, 23, 23, 0.1) !important;
+  }
+
+  .adaptive-header-bg-scrolled {
+    background-color: rgba(0, 0, 0, 1) !important; /* Solid Black when scrolled */
+    border-color: rgba(255, 255, 255, 0.2) !important;
+  }
+  
+  .light .adaptive-header-bg-scrolled {
+    background-color: rgba(255, 255, 255, 1) !important; /* Solid White when scrolled */
+    border-color: rgba(23, 23, 23, 0.15) !important;
+  }
+
+  /* Glass Effect - Advanced Web3 Glassmorphism with Reflection */
+  .glass {
+    position: relative;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow:
+      0 4px 24px -1px rgba(0, 0, 0, 0.2),
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+    transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
+
+  /* Color Reflection on Glass Hover */
+  .glass::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(
+      120deg,
+      transparent 30%,
+      var(--color-primary) 120%
+    );
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    border-radius: inherit;
+  }
+
+  .glass:hover {
+    border-color: rgba(255, 120, 80, 0.2);
+    box-shadow:
+      0 12px 40px -8px rgba(0, 0, 0, 0.4),
+      0 0 20px -5px var(--color-primary); /* Reflet couleur externe */
+    transform: translateY(-2px);
+  }
+
+  .glass:hover::before {
+    opacity: 0.05; /* Subtil reflet couleur interne */
+  }
+
+  /* Specific Dark Mode Refinements */
+  .dark .glass {
+    background: rgba(20, 15, 12, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .dark .glass:hover {
+    background: rgba(20, 15, 12, 0.8);
+    border-color: rgba(255, 140, 80, 0.3);
+  }
+
+  /* Fine Borders & Glows */
+  .border-fine {
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  /* Text Gradient Refined */
+  .text-gradient {
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    background-image: linear-gradient(
+      135deg,
+      var(--color-primary) 0%,
+      var(--color-secondary) 50%,
+      var(--color-accent) 100%
+    );
+    filter: drop-shadow(0 0 15px rgba(230, 100, 50, 0.3)); /* Glow du texte */
+  }
+
+  /* Mesh Gradient Background - Plus subtil et sombre */
+  .bg-mesh {
+    background-image:
+      radial-gradient(at 0% 0%, rgba(20, 15, 12, 1) 0%, transparent 50%),
+      radial-gradient(at 100% 0%, rgba(20, 15, 12, 1) 0%, transparent 50%),
+      var(--gradient-mesh);
+    background-size: 150% 150%;
+    animation: gradient 20s ease infinite;
+  }
+
+  /* Glow Effect Cuivre - Plus diffus */
+  .glow {
+    box-shadow: 0 0 60px -20px var(--color-primary);
+  }
+
+  .glow-hover:hover {
+    box-shadow: 0 0 80px -10px var(--color-primary);
+  }
+
+  /* Focus visible ring refined */
+  .focus-ring:focus {
+    outline: none;
+  }
+
+  .focus-ring:focus-visible {
+    outline: 1px solid var(--color-primary);
+    box-shadow: 0 0 0 4px rgba(230, 100, 50, 0.2);
+    outline-offset: 1px;
+  }
+}
+
+@keyframes gradient {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
 }
