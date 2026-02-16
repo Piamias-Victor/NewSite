@@ -39,10 +39,11 @@ export function HeroSection() {
         </FadeIn>
 
         {/* Color Inheritance Wrapper - Solves Dark Mode Specificity Issues */}
-        <div className="mb-6 max-w-[90vw] md:max-w-5xl text-white [.light_&]:text-black transition-colors duration-300 overflow-hidden md:overflow-visible">
+        <div className="mb-6 max-w-[90vw] md:max-w-5xl text-white in-[.light]:text-black transition-colors duration-300 overflow-hidden md:overflow-visible">
           <SplitText
             text="L'Intelligence Officinale"
-            className="text-display font-display font-bold leading-tight tracking-tight text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl pb-4 break-words"
+            as="h1"
+            className="text-display font-display font-bold leading-tight tracking-tight text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl pb-4 wrap-break-word"
             stagger={0.05}
           />
         </div>
@@ -65,16 +66,20 @@ export function HeroSection() {
         <FadeIn delay={0.6}>
           <div className="flex flex-col gap-4 sm:flex-row items-center justify-center">
             <MagneticButton>
-              <Button size="xl" variant="gradient" className="rounded-full shadow-glow group">
-                Découvrir nos solutions
-                <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
-              </Button>
+              <a href="/solutions" className="w-full sm:w-auto">
+                <Button size="xl" variant="gradient" className="rounded-full shadow-glow group w-full">
+                  Découvrir nos solutions
+                  <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+                </Button>
+              </a>
             </MagneticButton>
             
             <MagneticButton>
-              <Button size="xl" variant="glass" className="rounded-full">
-                Demander une démo
-              </Button>
+              <a href="#contact" className="w-full sm:w-auto">
+                <Button size="xl" variant="glass" className="rounded-full w-full">
+                  Demander une démo
+                </Button>
+              </a>
             </MagneticButton>
           </div>
         </FadeIn>

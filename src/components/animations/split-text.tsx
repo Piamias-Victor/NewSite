@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { motion, type HTMLMotionProps, type Variants } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef } from "react";
@@ -11,6 +12,7 @@ interface SplitTextProps extends HTMLMotionProps<"div"> {
   delay?: number;
   duration?: number;
   stagger?: number;
+  as?: React.ElementType;
 }
 
 export function SplitText({
@@ -19,6 +21,7 @@ export function SplitText({
   delay = 0,
   duration = 0.4,
   stagger = 0.03,
+  as: Component = "div",
   ...props
 }: SplitTextProps) {
   const ref = useRef(null);
@@ -55,13 +58,21 @@ export function SplitText({
     },
   };
 
+  // Map common tags to stable motion components to avoid recreation during render and any-types
+  const MotionComponent = 
+    Component === "h1" ? motion.h1 :
+    Component === "h2" ? motion.h2 :
+    Component === "h3" ? motion.h3 :
+    Component === "span" ? motion.span :
+    motion.div;
+
   return (
-    <motion.div
+    <MotionComponent
       ref={ref}
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
       variants={containerVariants}
-      className={cn("block break-words max-w-full", className)} // Changed to block to respect parent width
+      className={cn("block wrap-break-word max-w-full", className)}
       {...props}
     >
       <span className="sr-only">{text}</span>
@@ -71,12 +82,12 @@ export function SplitText({
             key={`${char}-${i}`}
             variants={charVariants}
             className="inline-block"
-            style={{ whiteSpace: "pre-wrap" }} // Preserve spaces but allow wrap
+            style={{ whiteSpace: "pre-wrap" }}
           >
             {char}
           </motion.span>
         ))}
       </span>
-    </motion.div>
+    </MotionComponent>
   );
 }

@@ -7,22 +7,22 @@ import { Quote } from "lucide-react";
 
 const TESTIMONIALS = [
   {
-    quote: "Depuis l'installation de Phardev, mes pertes sur périmés ont diminué de 40% la première année. C'est l'investissement le plus rentable que j'ai fait.",
-    author: "Pierre D.",
-    role: "Pharmacien Titulaire à Lyon",
-    stat: "-40% pertes"
+    quote: "J'étais sceptique au début comme souvent avec l'informatique, mais l'analyse des périmés sur Winpharma nous a sauvés. On a sorti 4 500€ de stock dormant en 3 mois. Mes préparatrices ne râlent plus sur les inventaires de dates.",
+    author: "Jean-Philippe R.",
+    role: "Titulaire, Pharmacie du Centre",
+    stat: "4 500€ sauvés"
   },
   {
-    quote: "Je passais mes dimanches à préparer mes commandes directes. Aujourd'hui, Phardev gère l'analyse en temps réel. Je profite enfin de mes weekends.",
-    author: "Sophie M.",
-    role: "Pharmacienne à Bordeaux",
-    stat: "+4h / semaine"
+    quote: "Le créateur de devis est devenu mon outil n°1 pour le matériel médical. Je sais exactement quelle marge je dégage avant de valider. Fini les calculs sur un coin de table pendant que le patient attend.",
+    author: "Catherine D.",
+    role: "Pharmacienne, Groupement Giphar",
+    stat: "Marge maîtrisée"
   },
   {
-    quote: "La clarté des tableaux de bord m'a permis de négocier de meilleures remises labo. J'ai une vision précise de mon stock dormant instantanément.",
-    author: "Marc L.",
-    role: "Titulaire Pharmabest à Paris",
-    stat: "+2% marge"
+    quote: "Passer en e-commerce me faisait peur pour la gestion du stock. La passerelle avec mon LGO LGPI est transparente. Le Click & Collect tourne tout seul, c'est un vrai relais de croissance sans stress supplémentaire.",
+    author: "Bruno T.",
+    role: "Officine de Quartier, Nantes",
+    stat: "+15% CA Web"
   }
 ];
 

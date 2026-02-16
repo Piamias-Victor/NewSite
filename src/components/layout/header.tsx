@@ -5,18 +5,21 @@ import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const NAV_LINKS = [
-  { label: "Accueil", href: "#hero" },
-  { label: "Solutions", href: "#services" },
-  { label: "ROI", href: "#roi" },
-  { label: "Témoignages", href: "#testimonials" },
-  { label: "Contact", href: "#contact" },
+  { label: "Accueil", href: "/", anchor: "hero" },
+  { label: "Solutions", href: "/solutions", anchor: "overview" },
+  { label: "ROI", href: "/#roi", anchor: "roi" },
+  { label: "Témoignages", href: "/#testimonials", anchor: "testimonials" },
+  { label: "Contact", href: "/#contact", anchor: "contact" },
 ];
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -27,18 +30,28 @@ export function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const scrollToSection = (href: string) => {
-    const element = document.querySelector(href);
-    if (element) {
-      const offset = 80; // Header height
-      const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - offset;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth",
-      });
+  const scrollToSection = (href: string, anchor?: string) => {
+    // Si on est sur l'accueil et qu'on veut une ancre
+    if (pathname === "/" && anchor) {
+      const element = document.getElementById(anchor);
+      if (element) {
+        const offset = 80;
+        const elementPosition = element.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - offset;
+        window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+        setIsMobileMenuOpen(false);
+        return;
+      }
     }
+    
+    // Cas spécial pour la page solutions si on y est déjà et qu'on clique sur Solutions
+    if (pathname === "/solutions" && anchor === "overview") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      setIsMobileMenuOpen(false);
+      return;
+    }
+
+    // Sinon, on laisse le comportement par défaut du Link opérer
     setIsMobileMenuOpen(false);
   };
 
@@ -54,27 +67,39 @@ export function Header() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
-            <button
-              onClick={() => scrollToSection("#hero")}
+            <Link
+              href="/"
               className="text-2xl font-display font-bold text-gradient hover:opacity-80 transition-opacity"
             >
               Phardev
-            </button>
+            </Link>
 
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center gap-8">
               {NAV_LINKS.map((link) => (
-                <button
-                  key={link.href}
-                  onClick={() => scrollToSection(link.href)}
-                  className="relative text-sm font-medium adaptive-text-primary transition-colors group"
+                <Link
+                  key={link.label}
+                  href={link.href}
+                  onClick={(e) => {
+                    if (pathname === "/" && link.href.startsWith("/#")) {
+                      e.preventDefault();
+                      scrollToSection(link.href, link.anchor);
+                    } else if (pathname === link.href) {
+                      e.preventDefault();
+                      scrollToSection(link.href, link.anchor);
+                    }
+                  }}
+                  className={`relative text-sm font-medium transition-colors group ${
+                    (pathname === link.href || (pathname === "/" && link.href === "/")) 
+                      ? "text-primary" 
+                      : "adaptive-text-primary"
+                  }`}
                 >
                   {link.label}
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-primary via-secondary to-accent transition-all duration-300 group-hover:w-full" />
-                  <span className="absolute inset-0 text-transparent bg-clip-text bg-gradient-to-r from-primary via-secondary to-accent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    {link.label}
-                  </span>
-                </button>
+                  <span className={`absolute -bottom-1 left-0 h-0.5 bg-linear-to-r from-primary via-secondary to-accent transition-all duration-300 ${
+                    (pathname === link.href) ? "w-full" : "w-0 group-hover:w-full"
+                  }`} />
+                </Link>
               ))}
             </nav>
 
@@ -132,16 +157,32 @@ export function Header() {
                 {/* Navigation Links */}
                 <div className="space-y-2 mb-8">
                   {NAV_LINKS.map((link, index) => (
-                    <motion.button
+                    <motion.div
                       key={link.href}
                       initial={{ opacity: 0, x: 20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: index * 0.05 }}
-                      onClick={() => scrollToSection(link.href)}
-                      className="w-full text-left py-4 px-5 rounded-xl adaptive-text-primary hover:bg-neutral-100 dark:hover:bg-white/5 transition-all duration-200 font-medium text-lg active:scale-95"
                     >
-                      {link.label}
-                    </motion.button>
+                      <Link
+                        href={link.href}
+                        onClick={(e) => {
+                          if (pathname === "/" && link.href.startsWith("/#")) {
+                            e.preventDefault();
+                            scrollToSection(link.href, link.anchor);
+                          } else if (pathname === link.href) {
+                            e.preventDefault();
+                            scrollToSection(link.href, link.anchor);
+                          } else {
+                            setIsMobileMenuOpen(false);
+                          }
+                        }}
+                        className={`w-full text-left block py-4 px-5 rounded-xl transition-all duration-200 font-medium text-lg active:scale-95 ${
+                          pathname === link.href ? "text-primary bg-primary/5" : "adaptive-text-primary hover:bg-neutral-100 dark:hover:bg-white/5"
+                        }`}
+                      >
+                        {link.label}
+                      </Link>
+                    </motion.div>
                   ))}
                 </div>
 
@@ -162,13 +203,24 @@ export function Header() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.35 }}
                   >
-                    <Button
-                      onClick={() => scrollToSection("#contact")}
-                      size="lg"
-                      className="rounded-full w-full active:scale-95 transition-transform"
+                    <Link
+                      href="/#contact"
+                      onClick={(e) => {
+                        if (pathname === "/") {
+                          e.preventDefault();
+                          scrollToSection("/#contact", "contact");
+                        } else {
+                          setIsMobileMenuOpen(false);
+                        }
+                      }}
                     >
-                      Réserver un audit
-                    </Button>
+                      <Button
+                        size="lg"
+                        className="rounded-full w-full active:scale-95 transition-transform"
+                      >
+                        Réserver un audit
+                      </Button>
+                    </Link>
                   </motion.div>
                 </div>
               </nav>

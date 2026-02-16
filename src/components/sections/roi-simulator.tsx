@@ -4,13 +4,13 @@ import { useState, useEffect } from "react";
 import { FadeIn, SplitText } from "@/components/animations";
 import { Container, Section } from "@/components/layout";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, TrendingUp, ShoppingCart, AlertTriangle, Calculator } from "lucide-react";
+import { ArrowRight, TrendingUp, ShoppingCart, AlertTriangle, Calculator, LucideIcon } from "lucide-react";
 import { motion, useSpring, useTransform } from "framer-motion";
 
 function CurrencyInput({ value, onChange }: { value: number; onChange: (val: number) => void }) {
   return (
     <div className="relative max-w-sm mx-auto mb-12 group">
-      <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-secondary/20 to-accent/20 rounded-full blur-xl opacity-20 group-hover:opacity-40 transition-opacity duration-500" />
+      <div className="absolute inset-0 bg-linear-to-r from-primary/20 via-secondary/20 to-accent/20 rounded-full blur-xl opacity-20 group-hover:opacity-40 transition-opacity duration-500" />
       <div className="relative flex items-center justify-center">
         <input
           type="number"
@@ -38,7 +38,7 @@ function StatCard({
 }: { 
   label: string; 
   value: number; 
-  icon: any; 
+  icon: LucideIcon; 
   delay?: number;
   description: string;
 }) {
@@ -153,10 +153,12 @@ export function RoiSimulator() {
             <p className="adaptive-text-description mb-8">
               Et ce n&apos;est que la partie visible de l&apos;iceberg. Imaginez l&apos;impact sur le reste de votre officine.
             </p>
-            <Button size="xl" className="rounded-full px-8 shadow-2xl shadow-primary/20 hover:shadow-primary/40 transition-all">
-              Lancer un audit complet
-              <ArrowRight className="ml-2 w-5 h-5" />
-            </Button>
+            <a href="#contact">
+              <Button size="xl" className="rounded-full px-8 shadow-2xl shadow-primary/20 hover:shadow-primary/40 transition-all">
+                Lancer un audit complet
+                <ArrowRight className="ml-2 w-5 h-5" />
+              </Button>
+            </a>
           </div>
         </FadeIn>
       </Container>

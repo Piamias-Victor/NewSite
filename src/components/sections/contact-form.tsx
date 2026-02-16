@@ -1,12 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import { z } from "zod";
 import { Container, Section } from "@/components/layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { FadeIn } from "@/components/animations";
 import { CheckCircle2, Mail, Phone, Building2, MapPin, Server } from "lucide-react";
+import { contactFormSchema } from "@/lib/validations/contact";
 
 export function ContactForm() {
   const [formData, setFormData] = useState({
@@ -21,33 +23,79 @@ export function ContactForm() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [apiError, setApiError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setErrors({});
+    setApiError(null);
 
-    // Mock submission
-    console.log("📧 Form submitted:", formData);
-    
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    
-    setIsSubmitting(false);
-    setIsSuccess(true);
+    try {
+      // Validation côté client avec Zod
+      const validatedData = contactFormSchema.parse(formData);
 
-    // Reset after 3 seconds
-    setTimeout(() => {
-      setIsSuccess(false);
-      setFormData({
-        prenom: "",
-        email: "",
-        telephone: "",
-        lgo: "",
-        pharmacie: "",
-        ville: "",
-        message: "",
+      // Appel API
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(validatedData),
       });
-    }, 3000);
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        // Gestion des erreurs API
+        if (response.status === 429) {
+          setApiError("Trop de requêtes. Veuillez réessayer dans 1 heure.");
+        } else if (data.details) {
+          // Erreurs de validation serveur
+          const fieldErrors: Record<string, string> = {};
+          data.details.forEach((err: { path: (string | number)[]; message: string }) => {
+            const fieldName = err.path[0];
+            if (typeof fieldName === "string") {
+              fieldErrors[fieldName] = err.message;
+            }
+          });
+          setErrors(fieldErrors);
+        } else {
+          setApiError(data.error || "Une erreur est survenue");
+        }
+        return;
+      }
+
+      // Succès
+      setIsSuccess(true);
+
+      // Reset après 3 secondes
+      setTimeout(() => {
+        setIsSuccess(false);
+        setFormData({
+          prenom: "",
+          email: "",
+          telephone: "",
+          lgo: "",
+          pharmacie: "",
+          ville: "",
+          message: "",
+        });
+      }, 3000);
+
+    } catch (error: unknown) {
+      // Erreur de validation Zod côté client
+      if (error instanceof z.ZodError) {
+        const fieldErrors: Record<string, string> = {};
+        error.issues.forEach((err) => {
+          fieldErrors[err.path[0] as string] = err.message;
+        });
+        setErrors(fieldErrors);
+      } else {
+        setApiError("Erreur de connexion. Veuillez réessayer.");
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -76,7 +124,7 @@ export function ContactForm() {
 
               <div className="space-y-4">
                 <div className="flex items-start gap-3">
-                  <CheckCircle2 className="w-6 h-6 text-primary mt-1 flex-shrink-0" />
+                  <CheckCircle2 className="w-6 h-6 text-primary mt-1 shrink-0" />
                   <div>
                     <h3 className="font-bold adaptive-text-primary mb-1">Réponse sous 24h</h3>
                     <p className="adaptive-text-description text-sm">
@@ -86,7 +134,7 @@ export function ContactForm() {
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <CheckCircle2 className="w-6 h-6 text-primary mt-1 flex-shrink-0" />
+                  <CheckCircle2 className="w-6 h-6 text-primary mt-1 shrink-0" />
                   <div>
                     <h3 className="font-bold adaptive-text-primary mb-1">Audit personnalisé</h3>
                     <p className="adaptive-text-description text-sm">
@@ -96,7 +144,7 @@ export function ContactForm() {
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <CheckCircle2 className="w-6 h-6 text-primary mt-1 flex-shrink-0" />
+                  <CheckCircle2 className="w-6 h-6 text-primary mt-1 shrink-0" />
                   <div>
                     <h3 className="font-bold adaptive-text-primary mb-1">Sans engagement</h3>
                     <p className="adaptive-text-description text-sm">
@@ -131,6 +179,12 @@ export function ContactForm() {
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-6">
+                  {apiError && (
+                    <div className="bg-destructive/10 border border-destructive text-destructive px-4 py-3 rounded-lg">
+                      {apiError}
+                    </div>
+                  )}
+
                   {/* Required Fields */}
                   <div>
                     <label htmlFor="prenom" className="block text-sm font-medium adaptive-text-primary mb-2">
@@ -145,7 +199,11 @@ export function ContactForm() {
                       onChange={handleChange}
                       placeholder="Jean"
                       className="w-full"
+                      error={errors.prenom}
                     />
+                    {errors.prenom && (
+                      <p className="text-sm text-destructive mt-1">{errors.prenom}</p>
+                    )}
                   </div>
 
                   <div>
@@ -163,8 +221,12 @@ export function ContactForm() {
                         onChange={handleChange}
                         placeholder="jean@pharmacie.fr"
                         className="w-full pl-10"
+                        error={errors.email}
                       />
                     </div>
+                    {errors.email && (
+                      <p className="text-sm text-destructive mt-1">{errors.email}</p>
+                    )}
                   </div>
 
                   <div>
@@ -182,8 +244,12 @@ export function ContactForm() {
                         onChange={handleChange}
                         placeholder="06 12 34 56 78"
                         className="w-full pl-10"
+                        error={errors.telephone}
                       />
                     </div>
+                    {errors.telephone && (
+                      <p className="text-sm text-destructive mt-1">{errors.telephone}</p>
+                    )}
                   </div>
 
                   {/* Optional Fields */}
@@ -205,8 +271,12 @@ export function ContactForm() {
                             onChange={handleChange}
                             placeholder="Winpharma, LGPI..."
                             className="w-full pl-10"
+                            error={errors.lgo}
                           />
                         </div>
+                        {errors.lgo && (
+                          <p className="text-sm text-destructive mt-1">{errors.lgo}</p>
+                        )}
                       </div>
 
                       <div>
@@ -223,8 +293,12 @@ export function ContactForm() {
                             onChange={handleChange}
                             placeholder="Pharmacie du Centre"
                             className="w-full pl-10"
+                            error={errors.pharmacie}
                           />
                         </div>
+                        {errors.pharmacie && (
+                          <p className="text-sm text-destructive mt-1">{errors.pharmacie}</p>
+                        )}
                       </div>
 
                       <div>
@@ -241,8 +315,12 @@ export function ContactForm() {
                             onChange={handleChange}
                             placeholder="Paris"
                             className="w-full pl-10"
+                            error={errors.ville}
                           />
                         </div>
+                        {errors.ville && (
+                          <p className="text-sm text-destructive mt-1">{errors.ville}</p>
+                        )}
                       </div>
 
                       <div>
@@ -257,7 +335,11 @@ export function ContactForm() {
                           placeholder="Décrivez brièvement votre besoin..."
                           rows={4}
                           className="w-full"
+                          error={errors.message}
                         />
+                        {errors.message && (
+                          <p className="text-sm text-destructive mt-1">{errors.message}</p>
+                        )}
                       </div>
                     </div>
                   </div>

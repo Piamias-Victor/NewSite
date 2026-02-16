@@ -19,13 +19,21 @@ export function InfiniteTunnel() {
 
   // Unsplash images - tech/abstract/pharma
   const IMAGE_URLS = [
-    "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=600&q=80",
-    "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=600&q=80", 
-    "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=600&q=80",
-    "https://images.unsplash.com/photo-1614850523060-8da1d56ae167?auto=format&fit=crop&w=600&q=80",
-    "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&w=600&q=80",
-    "https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?auto=format&fit=crop&w=600&q=80",
-    "https://images.unsplash.com/photo-1581093458791-9f302e68383e?auto=format&fit=crop&w=600&q=80",
+    "/tunnel-1.png",
+    "/tunnel-2.png",
+    "/tunnel-3.png",
+    "/tunnel-4.png",
+    "/tunnel-5.png",
+    "/tunnel-6.png",
+    "/tunnel-7.png",
+    "/tunnel-8.png",
+    "/tunnel-9.png",
+    "/tunnel-10.png",
+    "/tunnel-11.png",
+    "/tunnel-12.png",
+    "/tunnel-13.png",
+    "/tunnel-14.png",
+    "/tunnel-15.png",
   ];
 
   const CONFIG = {

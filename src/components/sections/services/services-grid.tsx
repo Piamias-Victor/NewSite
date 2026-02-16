@@ -61,13 +61,17 @@ export function ServicesGrid() {
                 </div>
                 
                 <div className="flex flex-col sm:flex-row gap-3 md:gap-4 shrink-0 mt-4 md:mt-0 relative z-20 w-full md:w-auto">
-                  <Button size="lg" variant="default" className="rounded-full shadow-xl md:h-14 md:px-8 md:text-lg w-full sm:w-auto text-sm md:text-lg">
-                    Nous contacter
-                    <ArrowRight className="ml-2 h-4 w-4 md:h-5 md:w-5" />
-                  </Button>
-                  <Button size="lg" variant="glass" className="rounded-full bento-header-bg hover:bg-neutral-800 bento-text-strong border-white/10 md:h-14 md:px-8 md:text-lg w-full sm:w-auto text-sm md:text-lg">
-                    Besoin d&apos;inspiration ?
-                  </Button>
+                  <a href="#contact" className="w-full sm:w-auto">
+                    <Button size="lg" variant="default" className="rounded-full shadow-xl md:h-14 md:px-8 md:text-lg w-full text-sm">
+                      Nous contacter
+                      <ArrowRight className="ml-2 h-4 w-4 md:h-5 md:w-5" />
+                    </Button>
+                  </a>
+                  <a href="/solutions" className="w-full sm:w-auto">
+                    <Button size="lg" variant="glass" className="rounded-full bento-header-bg hover:bg-neutral-800 bento-text-strong border-white/10 md:h-14 md:px-8 md:text-lg w-full text-sm">
+                      Besoin d&apos;inspiration ?
+                    </Button>
+                  </a>
                 </div>
               </div>
             }
