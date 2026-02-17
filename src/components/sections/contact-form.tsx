@@ -48,7 +48,7 @@ export function ContactForm() {
       if (!response.ok) {
         // Gestion des erreurs API
         if (response.status === 429) {
-          setApiError("Trop de requêtes. Veuillez réessayer dans 1 heure.");
+          setApiError("Trop de tentatives. Veuillez réessayer plus tard.");
         } else if (data.details) {
           // Erreurs de validation serveur
           const fieldErrors: Record<string, string> = {};
@@ -60,38 +60,36 @@ export function ContactForm() {
           });
           setErrors(fieldErrors);
         } else {
-          setApiError(data.error || "Une erreur est survenue");
+          setApiError(data.error || "Une erreur est survenue lors de l'envoi.");
         }
-        return;
+      } else {
+        // Succès
+        setIsSuccess(true);
+
+        // Reset après 3 secondes
+        setTimeout(() => {
+          setIsSuccess(false);
+          setFormData({
+            prenom: "",
+            email: "",
+            telephone: "",
+            lgo: "",
+            pharmacie: "",
+            ville: "",
+            message: "",
+          });
+        }, 3000);
       }
-
-      // Succès
-      setIsSuccess(true);
-
-      // Reset après 3 secondes
-      setTimeout(() => {
-        setIsSuccess(false);
-        setFormData({
-          prenom: "",
-          email: "",
-          telephone: "",
-          lgo: "",
-          pharmacie: "",
-          ville: "",
-          message: "",
-        });
-      }, 3000);
-
     } catch (error: unknown) {
       // Erreur de validation Zod côté client
       if (error instanceof z.ZodError) {
         const fieldErrors: Record<string, string> = {};
         error.issues.forEach((err) => {
-          fieldErrors[err.path[0] as string] = err.message;
+          if (err.path[0]) fieldErrors[err.path[0].toString()] = err.message;
         });
         setErrors(fieldErrors);
       } else {
-        setApiError("Erreur de connexion. Veuillez réessayer.");
+        setApiError("Une erreur est survenue lors de la validation.");
       }
     } finally {
       setIsSubmitting(false);
@@ -99,14 +97,12 @@ export function ContactForm() {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   return (
-    <Section className="relative z-10 w-full py-24 border-t border-white/5">
+    <Section id="contact" className="relative z-10 w-full py-24 border-t border-white/5 pt-8">
       <Container>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           {/* Left - Motivational Content */}

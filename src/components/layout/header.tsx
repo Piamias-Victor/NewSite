@@ -12,7 +12,7 @@ const NAV_LINKS = [
   { label: "Accueil", href: "/", anchor: "hero" },
   { label: "Solutions", href: "/solutions", anchor: "overview" },
   { label: "ROI", href: "/#roi", anchor: "roi" },
-  { label: "Témoignages", href: "/#testimonials", anchor: "testimonials" },
+  { label: "Partenaires", href: "/#partners", anchor: "partners" },
   { label: "Contact", href: "/#contact", anchor: "contact" },
 ];
 

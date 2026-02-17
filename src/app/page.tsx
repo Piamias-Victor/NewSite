@@ -3,7 +3,7 @@ import { ServicesGrid } from "@/components/sections/services/services-grid";
 import { RoiSimulator } from "@/components/sections/roi-simulator";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { InfiniteTunnel } from "@/components/backgrounds";
-import { Testimonials } from "@/components/sections/testimonials";
+import { PartnersMarquee } from "@/components/sections/partners-marquee";
 import { ContactForm } from "@/components/sections/contact-form";
 import { Header } from "@/components/layout/header";
 
@@ -24,8 +24,8 @@ export default function Home() {
           <div id="roi">
             <RoiSimulator />
           </div>
-          <div id="testimonials">
-            <Testimonials />
+          <div id="partners">
+            <PartnersMarquee />
           </div>
           <div id="contact">
             <ContactForm />
